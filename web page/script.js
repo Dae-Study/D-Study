@@ -11,7 +11,7 @@ function Search() {
 }
 
 Searching.Result = function() {
-  this.form.addEventListener('submit', e => {
+  this.form.addEventListener('button', e => {
 
     e.preventDefault();
 
@@ -19,11 +19,11 @@ Searching.Result = function() {
     let url = this.url.vaule;
 
     if(result === "filtering") 
-      location.href = url;
+      location.href = "filtering.html";
     else if(result === "compare") 
-      location.href = url;
+      location.href = "compare.html";
     else if(result === "report")
-      location.href = url; 
+      location.href = "report.html"; 
   });
 }
 

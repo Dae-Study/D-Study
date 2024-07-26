@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D-Search</title>
+    <title>D-SEARCH</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="test.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
     <h1>D-Search</h1>
     <form class ='search'>
-        <button class = "S-button" type = "submit" name = "searchBtn" value = "">SEARCH</button>
+        <button class = "S-button" type = "button" name = "searchBtn" value = "" onclick = "Searching.Result()">SEARCH</button>
         <input class = "url" type="text" name = "search" value = "" autocomplete = "off">
         <select class = "SelectSearch" name = "WhichSearch">
-            <option id = "filtering" value = "filtering">FILTERING</option>
-            <option id = "compare" value = "compare">COMPARE</option>
-            <option id = "report" value = "report">REPORT</option>
+            <option id = "filtering" value = "filtering.html">FILTERING</option>
+            <option id = "compare" value = "compare.html">COMPARE</option>
+            <option id = "report" value = "report.html">REPORT</option>
         </select>
     </form>
 </body>
