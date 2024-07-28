@@ -32,3 +32,9 @@ select {
 select option {
     background-color: rgba(244, 249, 255, 0.767);
 }
+iframe {
+    float: right;
+    width: 250px;
+    height: 800px;
+    border: none;
+}

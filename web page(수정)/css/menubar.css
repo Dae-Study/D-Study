@@ -1,0 +1,42 @@
+body{
+    position: relative;
+}
+
+#openMenu{
+    padding-top: 1.2rem;
+    padding-right: 1.2rem;
+    cursor: pointer;
+    color:rgb(97, 132, 189);
+    font-size: 50;
+}
+  
+#closeMenu {
+    padding-top: 1.2rem;
+    padding-right: 1.2rem;
+    cursor: pointer;
+}
+  
+#menu{
+    width: 10%;
+    position: absolute;
+    left: -100%;
+    top: 0;
+    background-color:rgba(244, 249, 255, 0.767);
+    color: rgb(97, 132, 189);
+    font-size: 50;
+  
+    -webkit-transition: left .3s;
+    -moz-transition: left .3s;
+    -ms-transition: left .3s;
+    -o-transition: left .3s;
+    transition: left .3s;
+}
+  
+#menu ul li {
+    display: block;
+    padding-top: 1.05rem;
+}
+  
+#menu.on {
+    left: 0;
+}
