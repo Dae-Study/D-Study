@@ -1,0 +1,685 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>백엔드 구상 아이디어 [윤아작성]</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="625b16c3-c449-41c1-9801-a19379215460" class="page sans"><header><h1 class="page-title">백엔드 구상 아이디어 [윤아작성]</h1><p class="page-description"></p></header><div class="page-body"><p id="ba809dbd-fe8d-450e-b2f9-e2cd5a4092e1" class="">
+</p><p id="2a1aa602-9b9a-4134-9913-ec71264617bd" class="">
+</p><h1 id="1ecfe1ee-97a0-4222-a450-a3768fdf2361" class="">1 기능 추가했으면 하는 것</h1><p id="3d427a01-7c67-49f8-b80a-286788acaa89" class="">부정의 퍼센트를 골라서 해당 댓글만 필터링 되도록 하기</p><p id="34d70c51-f3a0-4d9d-8530-adf2c5b28506" class="">예시)</p><ol type="1" id="e4f075c6-5e28-42a5-b9ba-cd2f216ec1ca" class="numbered-list" start="1"><li>욕설인데 부정은 100%에서 80%으로 잡아두고 욕설(육두문자)의 빈도수에 따라 퍼센트 다르게</li></ol><ol type="1" id="e843496a-e68f-4fbe-a2f3-1c21f4d4d7d8" class="numbered-list" start="2"><li>욕설은 없는데 부정은 80%에서 60%으로 잡아두고 부정 표현(짜증난다, 화난다처럼 육두문자는 아니지만 부정적인 뜻)의 빈도수에 따라 퍼센트 다르게</li></ol><ol type="1" id="83e179d9-1ef0-460a-84cc-f77a8ab0fcd6" class="numbered-list" start="3"><li>욕설도 부정표현도 없지만 부정인 문장</li></ol><ol type="1" id="11db4912-26f4-42fe-9788-ff95aaa8d65b" class="numbered-list" start="4"><li>욕설도 없고 긍정인 문장</li></ol><p id="0066ddb4-dac7-49fa-bc46-1a5c5ab7ff88" class="">등등</p><h1 id="abe32285-0a10-4328-b572-0d38cc0fe0ce" class="">2 데이터가 가장 중요하다고 합니다. 단어 리스트를 이렇게 모아보면 좋을 것 같아용</h1><p id="42cd093b-b7f3-44e3-a581-723606756f41" class="">1) 육두문자 리스트(시발, 썅 등등)</p><p id="6c58a332-c316-4763-838b-00816b012446" class="">영희 코멘트 :  제가 오늘 테스트 해볼게요 (7/25)</p><p id="6af9ffcb-be5e-4689-89d6-e61811f472bc" class="">2)부정표현 리스트(짜증나, 뭣같네 등등)</p><p id="1c02caff-db02-46fc-93bb-4dd76ebbd4db" class="">3)일반 단어(한국어 사전 느낌) 리스트</p><p id="07fcd34e-a0db-4d39-8c96-221121ea9525" class="">등등</p><h1 id="e408b0ad-fe5c-4ec2-8320-dcd1bd2b541c" class="">3 고려해봤으면 하는 것</h1><p id="1383c1ce-7103-4188-8879-66e49d6dcc0f" class="">트랜스포머를 사용하는 이유: 앞 뒤 단어와의 연관성, 의존성을 보기 위해서</p><h2 id="6f62376e-19d9-46fa-8e73-b3e8b1398e3a" class="">욕설 또는 부정단어 나올때</h2><p id="3a09c7a3-36bc-4bdc-932b-801492b1d991" class="">해당 단어(부정, 욕설)의 앞 뒤로 어디까지 볼건지</p><p id="3dac017c-27a5-4e9e-9388-78224529e567" class="">ex) 단어기준으로 볼건지,, 단어로 기준을 한다면 앞 뒤로 2개, 3개 할건지,, 정하면 좋을 듯</p><h2 id="e77a436d-1d0b-40d3-91e6-5b9b8e00b1d0" class="">욕설(부정표현)x 부정 문장일때(는 물론, 욕설이나 부정단어의 경우도 포함됩니다)</h2><p id="38832909-6dc7-4765-a1fa-ce765b48de37" class="">경우의 수를 많이 나누면 좋을 것 같아요</p><p id="e8129cc7-01de-4993-ac4a-4fbca170faa9" class="">제가 개인적으로 생각해본 아이디어를 밑에 적겠습니다</p><h3 id="efafd073-7f9a-43af-ba12-0ea3951ec441" class="">특정인물의 이름이 나오는 경우(그냥 특정인물 없는 상황에도 적용해봅시다)</h3><p id="b30f2a24-8bd0-45d7-91bf-7cb5cdb5a9f5" class="">밑에 모든 경우 이름의 위치는 어디든 이동가능합니다.</p><p id="5288932e-c118-4bd5-9ebc-aa2081d30e27" class="">
+</p><p id="6c1e4c9c-dc0c-433b-aa9a-45caa1f2c244" class="">1) 특정인물(근데 이름 없는경우에도 적용가능한지 고려해보면 좋을것같음)이름과 부정표현이 나오는 경우</p><figure id="3e0a58e0-0120-44a2-890d-f5faa4e73ad7" class="image"><a href="%E1%84%87%E1%85%A2%E1%86%A8%E1%84%8B%E1%85%A6%E1%86%AB%E1%84%83%E1%85%B3%20%E1%84%80%E1%85%AE%E1%84%89%E1%85%A1%E1%86%BC%20%E1%84%8B%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B5%E1%84%8B%E1%85%A5%20%5B%E1%84%8B%E1%85%B2%E1%86%AB%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A5%E1%86%BC%5D%20625b16c3c44941c19801a19379215460/Untitled.png"><img style="width:1452px" src="%E1%84%87%E1%85%A2%E1%86%A8%E1%84%8B%E1%85%A6%E1%86%AB%E1%84%83%E1%85%B3%20%E1%84%80%E1%85%AE%E1%84%89%E1%85%A1%E1%86%BC%20%E1%84%8B%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B5%E1%84%8B%E1%85%A5%20%5B%E1%84%8B%E1%85%B2%E1%86%AB%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A5%E1%86%BC%5D%20625b16c3c44941c19801a19379215460/Untitled.png"/></a></figure><p id="9d9fb86e-77ff-4527-bdbe-aa2516437168" class="">부정 단어 앞 뒤 중 긍정단어가 나오면 욕설인데 부정인 경우에서 배</p><p id="a5ce4886-49e2-4130-a396-dafdc959d036" class="">이 경우 ㅈㄴ 좋다 등의 문장은 구별이 가능하지만, ㅈㄴ 좋아하겠다?(좋아하겠냐? 같은 뜻) 이런 문장은 어려움. 그래서 이런 경우 물음표가 들어가면 부정으로 분류하거나 ~겠다 형식으로 끝나는게 대부분 꼬는 표현이라서 이런 걸 고려하면 될 것 같음)</p><p id="266a16b2-8239-4f8a-8a9f-6162276022ff" class="">
+</p><p id="413eb080-4b75-49db-a39f-ac561842e7e2" class="">2) 부정표현이 없는 경우</p><figure id="7a0f4aec-07b8-45fc-b340-e2ef09fb08df" class="image"><a href="%E1%84%87%E1%85%A2%E1%86%A8%E1%84%8B%E1%85%A6%E1%86%AB%E1%84%83%E1%85%B3%20%E1%84%80%E1%85%AE%E1%84%89%E1%85%A1%E1%86%BC%20%E1%84%8B%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B5%E1%84%8B%E1%85%A5%20%5B%E1%84%8B%E1%85%B2%E1%86%AB%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A5%E1%86%BC%5D%20625b16c3c44941c19801a19379215460/Untitled%201.png"><img style="width:708px" src="%E1%84%87%E1%85%A2%E1%86%A8%E1%84%8B%E1%85%A6%E1%86%AB%E1%84%83%E1%85%B3%20%E1%84%80%E1%85%AE%E1%84%89%E1%85%A1%E1%86%BC%20%E1%84%8B%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B5%E1%84%8B%E1%85%A5%20%5B%E1%84%8B%E1%85%B2%E1%86%AB%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A5%E1%86%BC%5D%20625b16c3c44941c19801a19379215460/Untitled%201.png"/></a></figure><p id="0eb21555-fdcc-434b-95a7-316072bb50cd" class="">앞 문장과 뒤 문장의 단어들을 비교하는 알고리즘을 사용.</p><p id="84ac6acb-d9f8-4bd9-a5f9-85498685e6b5" class="">단어1과 단어2가 반대되는 뜻을 가지면 부정으로 분류(이건 아직 잘 모르겠음 ㅜ)</p><p id="5589bf5e-9149-4a23-a60b-3fc7066431c4" class="">예시) 정준하가 나갔어야 하는데. 다른 사람 뽑았으면 더 나았을듯.</p><p id="b43a6483-474d-4a09-852c-d574de7fec69" class="">나갔어야 와 뽑았으면 → 그래서 단어마다 될 수 있는 뜻을 포함하는 리스트도 만들면 좋겠어요.</p><p id="eaa1ccbf-2ad6-4bb0-a178-ce71f3b31bf4" class="">인공지능은 데이터 싸움이니까 ,, 힘들겠지만,,</p><p id="71e6db6e-024e-4cff-8ac8-f2982a7c5092" class="">
+</p><ul id="cc8b6e2d-d035-4f50-96b7-3d472a736f24" class="bulleted-list"><li style="list-style-type:disc">완전히 다른 이야기를 하는 문장이면 어떻게 하나요?</li></ul><p id="4db40970-bc2f-4df3-ae26-3b212f848d00" class="">트랜스포머 기능 중 이 문장이 다음 문장과 이어지는 문장인지 확인하는 기능이 있습니당</p><p id="56e585f8-be8d-425a-9b68-0cc7b18e5c4b" class="">Next Sentence Prediction (NSP) 기능</p><p id="c97512ae-1e09-4590-bce8-518810998a19" class="">
+</p><p id="d3a1f95e-d5bd-43ea-b99c-43e2a4bc0d78" class="">3) 대명사 또는 특정되는 단어(저새끼, 님, 쟤, 얘, 저기요 등)</p><p id="7480ea97-d657-4095-9dc5-f515aa6daea8" class="">
+</p><p id="27a1a57e-f585-492e-bcbc-561e2ca91728" class="">4) 특정하는 단어 없이 그냥 말할때(뭐하는거임?, 그건 불가능해 등)</p><h2 id="a8aed043-bef9-4952-94ff-2e63fd081abb" class="">특정인물 이름을 변형해서 사용하는 경우는 어떻게 하나요?</h2><p id="e7001476-7046-4dd9-bcfb-17463d9fe531" class="">이건 혜빈이가 찾아준 오픈소스 중 하나인 “<a href="https://github.com/paitoss/tetrapod">https://github.com/paitoss/tetrapod</a>“를 사용하면 분류가능 할 것 같습니다.</p><h2 id="86af4ccf-3eb0-489e-8ff4-c75482018207" class="">문장 구분(쪼개기)는 어떻게 하나요?</h2><p id="565c3acf-fff5-45ec-a333-3e93d726d8f7" class="">온점이 없는 경우 나누기가 어려울것같은데</p><p id="082e4993-678d-4519-ac12-15062b028d8f" class="">1) ~다, ~함, ~임 등 대부분 문장을 나누게 하는 단어들 또는 규칙들을 찾으면 될 것 같아요</p><ul id="58a59c7e-0df6-4c00-802d-bcca321cd259" class="bulleted-list"><li style="list-style-type:disc"> 엇 그럼 저 표현들로 끝나는 단어는 어떻게 하죠? 그건 일반 단어 리스트로 먼저 배제하면 됩니다</li></ul><p id="2667dc78-5d1c-4f61-a564-0eba992e0cbc" class="">2) 온점이 너무 과다한 경우 ex) 아갓시. 너무. 예쁘.시네요. 등등…(아저씨들 말투)</p><p id="cb194897-9b1b-471a-90e4-0094de394b63" class="">이 경우 온점 앞에 (아갓시. 면 ‘시’) 단어를 보고 1번의 규칙을 적용시키면 어떨까요?</p><p id="21468bba-8e77-4891-be5f-7a49d8dbe86d" class="">3) 정상적인 띄어쓰기 및 온점이 있을때</p><p id="cb0ebc8a-cd1d-482a-8155-2615d2635d53" class="">이건 1번 2번 적용시키면 알아서 분류될 것 같습니다. 회의때 더 고려해보죠</p><p id="2f64295a-b6c1-4282-88f8-e1a437a99782" class="">4) 띄어쓰기 없는 문장</p><p id="bffd4992-ac2c-4540-9d47-0499d226f19a" class="">이것도 1번을 적용시킬 건데 이거 전에 일반 단어를 분류시켜야 하자나용? 근데 단어들이 붙어있어서 그냥 분류하는건 어려울 것 같단 말이죠</p><p id="dcda334d-06ca-4c4f-8ced-e499dc27e1d4" class="">그래서 생각해봤는데 오토마타때 배웠던 개념이나 이어지는 단어들로 구성된 문장에서 단어를 찾는 알고리즘이나 오픈소스를 찾아보면 좋을 것 같아요.</p><p id="f0ae1edb-13ae-4a66-a0bb-19e5a54701b4" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
