@@ -9,9 +9,9 @@ __Labeling__ : Labeling 필요 코드(.py) pakage화
 
 __1) MongDBconnection__: 
 
-     __def DBconnection(DB_name, Col_name, type):__ 몽고DB 데이터베이스의 collection 가져옴
+     def DBconnection(DB_name, Col_name, type):__ 몽고DB 데이터베이스의 collection 가져옴
 
-     __def MongoDB_Update(df, collection):__ 몽고DB 데이터베이스의 collection 등록함
+     def MongoDB_Update(df, collection):__ 몽고DB 데이터베이스의 collection 등록함
 
 __2) BadWordFiltering__ : DataFrame에 있는 문장을 검사하여 욕설이 있는 경우 label_1 값을 0, 아니면 1로 표현하
                           1. 문장 비속어 검사 2. 공백 제거 비속어 검사
