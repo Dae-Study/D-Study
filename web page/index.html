@@ -4,19 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D-SEARCH</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <div id="sidebar">
+        <iframe id="iframesidebar" src="sidebar.html"></iframe>
+    </div>
 </head>
 <body>
     <h1>D-Search</h1>
-    <form class ='search'>
-        <button class = "S-button" type = "button" name = "searchBtn" value = "" onclick = "Searching.Result()">SEARCH</button>
-        <input class = "url" type="text" name = "search" value = "" autocomplete = "off">
-        <select class = "SelectSearch" name = "WhichSearch">
-            <option id = "filtering" value = "filtering.html">FILTERING</option>
-            <option id = "compare" value = "compare.html">COMPARE</option>
-            <option id = "report" value = "report.html">REPORT</option>
-        </select>
-    </form>
-</body>
+
+    <select id="options">
+        <option value="filtering.html">FILTERING</option>
+        <option value="compare.html">COMPARE</option>
+        <option value="report.html">REPORT</option>
+    </select>
+
+    <input type="text" id="urlInput" placeholder="URL here">
+
+    <button onclick="openNewPage()">SEARCH</button>
+
+    <script src="js/script.js"></script>
+    
+ </body>   
+
 </html>

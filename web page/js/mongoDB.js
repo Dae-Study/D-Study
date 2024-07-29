@@ -4,7 +4,12 @@ const { MongoClient } = require('mongodb');
 const uri = 'mongodb+srv://gimyuna:dtw01060@DL-Dragons.gqslqxe.mongodb.net/?retryWrites=true&w=majority';
 
 // MongoDB 클라이언트 생성
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    tlsAllowInvalidCertificates: true, // 추가 설정
+    tlsAllowInvalidHostnames: true // 추가 설정
+});
 
 async function run() {
     try {
