@@ -1,6 +1,10 @@
+from langdetect import detect, DetectorFactory
+from kiwipiepy import Kiwi
 from __init__ import*
 #from MongDBconnection import DBconnection
 import re
+# 언어 감지기의 랜덤성을 제거하여 동일한 결과를 얻도록 설정
+DetectorFactory.seed = 0
 
 class BadWordFiltering(set):
     """
@@ -53,6 +57,9 @@ class BadWordFiltering(set):
                 print(f"비속어 발견: {word} in {text}")  # 디버깅용
                 return True
         return False
+    
+
+
 
     def partial_check(self, text):
         """
@@ -72,11 +79,12 @@ class BadWordFiltering(set):
                     print(f"공백 제거 후 비속어 발견: {word} in {text_no_spaces}")  # 디버깅용
                     return True
         return False
-    
+
+
         # 각 행을 검사하고 비속어가 포함된 경우 label_1을 0으로 설정    
 
 # BadWordFiltering 인스턴스 생성, 비속어 목록 파일 경로를 제공
-bad_word_filter = BadWordFiltering(file_path=r'C:\Users\oben0\Desktop\Git_Local\D-Study\Labeling\badwords.txt')
+bad_word_filter = BadWordFiltering(file_path=r'C:\Users\oben0\Desktop\Git_Local\D-Study\D-Study-Gang\D-Study-Gang\Labeling\badwords.txt')
 
 def check_both(text, bad_word_filter):
     """
@@ -88,7 +96,45 @@ def check_both(text, bad_word_filter):
     """
     return bad_word_filter.check(text) or bad_word_filter.partial_check(text)
 
+def contains_foreign_language(text):
+    """
+    텍스트에 외국어(영어, 일본어)가 포함되어 있는지 확인합니다.
+
+    :param text: 확인할 텍스트.
+    :return: 영어 또는 일본어가 포함되어 있으면 True, 그렇지 않으면 False.
+    """
+    # 영어와 일본어 문자를 탐지하기 위한 정규 표현식
+    english_regex = re.compile(r'[A-Za-z]')
+    japanese_regex = re.compile(r'[\u3040-\u30ff\u31f0-\u31ff\u4e00-\u9faf]')
+
+    if english_regex.search(text):
+        return True
+    if japanese_regex.search(text):
+        return True
+
+    # langdetect를 사용하여 텍스트의 언어를 감지
+    try:
+        lang = detect(text)
+        if lang in ['en', 'ja']:
+            return True
+    except:
+        return False
+    return False
+
+# Kiwi 객체 생성
+kiwi = Kiwi()
+
+
+
+
+
+
+
+
+
+
+
 def Labeling_1(df):
     # 각 행을 검사하고 비속어가 포함된 경우 label_1을 0으로 설정 
-    df['label_1'] = df['text'].apply(lambda text: 0 if check_both(text, bad_word_filter) else 1)
+    df['label_1'] = df['text'].apply(lambda text: '000' if contains_foreign_language(text) else (0 if check_both(text, bad_word_filter) else 1))
     return df
