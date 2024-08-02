@@ -1,5 +1,3 @@
-
-
 const loginN = document.getElementById('LOGIN_N');
 const loginFN = document.getElementById('LOGIN_FN');
 const loginBtn = document.getElementById('LOGIN_BTN');
@@ -15,7 +13,7 @@ function color() {
 }
 
 function moveToIndex(){
-    location.href="index.html";
+    location.href="search.html";
 }
 
 loginN.addEventListener('keyup', color);

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Data Compare</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .collection {
+            width: 48%;
+            border: 2px solid rgb(97, 132, 189);
+            border-radius: 5px;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+        .collection h2 {
+            margin-top: 0;
+        }
+        .data-item {
+            border-bottom: 2px solid rgb(97, 132, 189);
+            padding: 5px 0;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Compare Data</h1>
+    <div class="container">
+        <div id="collection1" class="collection">
+            <h2>Original Collection</h2>
+            <div id="collection1-data"></div>
+        </div>
+        <div id="collection2" class="collection">
+            <h2>Filtering Collection</h2>
+            <div id="collection2-data"></div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('/data');
+                const data = await response.json();
+
+                const collection1Data = document.getElementById('collection1-data');
+                const collection2Data = document.getElementById('collection2-data');
+
+                collection1Data.innerHTML = data.Min_A.map(item => `
+                    <div class="data-item">
+                        <strong>Text:</strong> ${item.text}<br>
+                        <strong>Time:</strong> ${item.time}<br>
+                        <strong>Author:</strong> ${item.author}
+                    </div>
+                `).join('<hr>');
+
+                collection2Data.innerHTML = data.New_A.map(item => `
+                    <div class="data-item">
+                        <strong>Text:</strong> ${item.text}<br>
+                        <strong>Time:</strong> ${item.time}<br>
+                        <strong>Author:</strong> ${item.author}
+                    </div>
+                `).join('<hr>');
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>

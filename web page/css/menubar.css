@@ -3,27 +3,32 @@ body{
 }
 
 #openMenu{
-    padding-top: 1.2rem;
-    padding-right: 1.2rem;
+    padding-top: 2.1rem;
+    padding-left: 20px;
     cursor: pointer;
-    color:rgb(97, 132, 189);
+    color:rgb(97, 132, 189); 
     font-size: 50;
 }
   
 #closeMenu {
-    padding-top: 1.2rem;
-    padding-right: 1.2rem;
+    padding-top: 1.5rem;
+    padding-left: 15px;
     cursor: pointer;
 }
   
 #menu{
     width: 10%;
+    height: 100%;
     position: absolute;
     left: -100%;
     top: 0;
     background-color:rgba(244, 249, 255, 0.767);
     color: rgb(97, 132, 189);
     font-size: 50;
+    padding: 10px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+    border: 2px solid rgb(97, 132, 189);
+    border-radius: 5px;
   
     -webkit-transition: left .3s;
     -moz-transition: left .3s;
@@ -39,4 +44,15 @@ body{
   
 #menu.on {
     left: 0;
+}
+
+#menu a {
+    color:rgb(97, 132, 189);
+    text-decoration: none; /* 링크의 기본 밑줄 제거 (선택 사항) */
+    display: block; /* 링크를 블록으로 설정 (선택 사항) */
+    padding: 10px; /* 링크의 패딩 (선택 사항) */
+}
+
+#menu a:hover {
+    color:#01376A; /* 마우스를 올렸을 때의 글자색 (선택 사항) */
 }
