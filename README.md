@@ -1,3 +1,20 @@
+# 시스템 설계
+
+# 웹페이지 설계
+
+# 기능요구사항 명세서
+
+
+
+
+
+
+
+
+
+
+
+
 # [[Date 7/23]]
 트랜스포머 중 BERT와 RoBERT 모델을 사용하기 위해 gitHub huggingface의 modeling코드를 살펴봄
 
