@@ -11,8 +11,11 @@ __1) MongDBconnection__:
      def MongoDB_Update(df, collection):__ 몽고DB 데이터베이스의 collection 등록함
 
 __2) BadWordFiltering__ : DataFrame에 있는 문장을 검사하여 욕설이 있는 경우 label_1 값을 0, 아니면 1로 표현함
+
                           1. 문장 비속어 검사 : 구현 완료 
+
                           2. 형태소 검사 후 공백 제거 비속어 검사 (작업중) 
+
                           3. 영문, 일본어 제거 : 구현 완료 but 비중 검사를 한번 더 적용해야할 것 같음 
 
 __3) badWords__ : 나쁜말 모음집 (.txt)  
