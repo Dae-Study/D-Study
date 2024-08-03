@@ -1,0 +1,68 @@
+body {
+    display: flex;
+    font-family: Arial, sans-serif;
+
+    margin: 0;
+    padding: 10px;
+}
+#sidebar {
+    width: 200px;
+    background-color:rgba(244, 249, 255, 0.767);
+    padding: 10px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+    border: 2px solid rgb(97, 132, 189);
+    border-radius: 5px;
+}
+.sidebar-item {
+    padding: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    color:rgb(97, 132, 189);
+
+
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+.sidebar-item:hover {
+    background-color:rgba(210, 223, 244, 0.884);
+    border-radius: 5px;
+}
+/*
+#recordsContainer {
+   
+    
+} 
+*/
+.action-button {
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 5px;
+}
+/*
+.delete-button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.edit-button {
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+*/

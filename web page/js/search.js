@@ -13,13 +13,38 @@ function openNewPage() {
   }
 } */
 
-  function openNewPage() {
+function openNewPage() {
     var selectElement = document.getElementById("options");
     var selectedOption = selectElement.value;
+    var urlInput = document.getElementById("urlInput").value.trim();
     
     if (selectedOption) {
+        saveRecord(urlInput + "/" + selectedOption);
         location.href = selectedOption;
     } else {
         alert('Please select a page.');
     }
+}
+
+function saveRecord(query) {
+    let records = JSON.parse(localStorage.getItem('records')) || [];
+    const timestamp = new Date().toISOString();
+    records.push({ query, timestamp, name: name || query });
+    localStorage.setItem('records', JSON.stringify(records));
+    const iframeSidebar = document.getElementById('iframesidebar').contentWindow;
+    iframeSidebar.updateSidebar();
+}
+
+function openRecord(query) {  // 검색 결과 기록 함수
+    location.href = query;    // 백엔드꺼 연결시 여기서!!
+}
+
+window.addEventListener('storage', () => {
+    const iframeSidebar = document.getElementById('iframesidebar').contentWindow;
+    iframeSidebar.updateSidebar();
+});
+
+document.onkeyup = function (e) {
+    let keyCode = e.keyCode;
+    if (keyCode === 13) openRecord();
 }

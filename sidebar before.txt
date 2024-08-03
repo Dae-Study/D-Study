@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar</title>
+    <style>
+        /* 간단한 스타일링 */
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+        }
+        #sidebar {
+            width: 200px;
+            background-color:rgba(244, 249, 255, 0.767);
+            padding: 10px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+            border: 2px solid rgb(97, 132, 189);
+            border-radius: 5px;
+        }
+        /*#content {
+            flex-grow: 1;
+            padding: 20px;
+        }*/
+        .sidebar-item {
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            color:rgb(97, 132, 189);
+            text-align: center;
+        }
+        .sidebar-item:hover {
+            background-color:rgba(171, 196, 236, 0.884);
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <div class="sidebar-item" data-record="record1">Record 1</div>
+        <div class="sidebar-item" data-record="record2">Record 2</div>
+        <div class="sidebar-item" data-record="record3">Record 3</div>
+        <!-- 추가 항목들을 여기에 추가 -->
+    </div>
+
+<!--
+    <div id="content">  
+-->
+        <!-- 선택한 기록의 내용이 여기에 표시됩니다 -->
+<!--    <h1>Content Area</h1>
+        <p>Select a record from the sidebar to view its content here.</p>
+    </div> 
+-->
+
+
+    <script>
+        // 기록 데이터 예시 (실제로는 서버에서 가져오거나 AJAX 요청 등을 통해 불러올 수 있음)
+        const records = {
+            record1: "<h2>Record 1</h2><p>This is the content for record 1.</p>",
+            record2: "<h2>Record 2</h2><p>This is the content for record 2.</p>",
+            record3: "<h2>Record 3</h2><p>This is the content for record 3.</p>"
+        };
+
+        // 사이드바 항목에 클릭 이벤트 리스너 추가
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const recordKey = item.getAttribute('data-record');
+                const content = records[recordKey];
+                if (content) {
+                    document.getElementById('content').innerHTML = content;
+                } else {
+                    document.getElementById('content').innerHTML = "<p>Content not found.</p>";
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>

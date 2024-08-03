@@ -38,3 +38,11 @@ iframe {
     height: 800px;
     border: none;
 }
+
+#main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+#searchResults {
+    margin-top: 20px;
+}
