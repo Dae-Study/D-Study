@@ -2,7 +2,7 @@
 
 ## Date 8/4
 ### 1. 파일 설명
-####Seperate_name:
+#### Seperate_name:
 __1) hangul_components: 초성, 중성, 종성 리스트__
 
 __2) Korean_consonants: 각 자음 및 모음마다 자신과 비슷한 발음 또는 사람들이 자주 오타를 내거나 일부러 바꿔쓰는 빈도가 높은 자음 또는 모음으로 리스트 구성__
