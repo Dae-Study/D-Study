@@ -5,17 +5,15 @@ function updateSidebar() {
     records.forEach((record, index) => {
         let div = document.createElement('div');
         div.className = 'sidebar-item';
-        div.innerHTML = `<span>${record.name}</span>
-                        <span>
-                            <button class="action-button" onclick="deleteRecord(${index})">Delete</button>
-                            <button class="action-button" onclick="editRecord(${index})">Edit</button>
-                        </span>`;
+        div.innerHTML =  `<span>${record.name}</span>
+                          <button class="edit-button" onclick="editRecord(${index})">✐</button>
+                          <button class="delete-button" onclick="deleteRecord(${index})">✖</button>`;
         recordsContainer.appendChild(div);
     });
 
     document.querySelectorAll('.sidebar-item').forEach(item => {
-        item.addEventListener('click', () => {
-            if (!e.target.classList.contains('action-button')) {
+        item.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('edit-button') && !e.target.classList.contains('delete-button')) {
                 const recordIndex = Array.from(item.parentNode.children).indexOf(item);
                 const record = records[recordIndex];
                 if (record) {  // 검색 결과 기록 함수
@@ -29,15 +27,17 @@ function updateSidebar() {
 }
 
 function deleteRecord(index) {
-    let records = JSON.parse(localStorage.getItem('records')) || [];
-    records.splice(index, 1);
-    localStorage.setItem('records', JSON.stringify(records));
-    updateSidebar();
+    if (confirm("삭제하시겠습니까?")) {
+        let records = JSON.parse(localStorage.getItem('records')) || [];
+        records.splice(index, 1);
+        localStorage.setItem('records', JSON.stringify(records));
+        updateSidebar();
+    }
 }
 
 function editRecord(index) {
     let records = JSON.parse(localStorage.getItem('records')) || [];
-    let newName = prompt("Enter new name for the record:", records[index].name);
+    let newName = prompt("제목을 입력하세요:", records[index].name);
     if (newName) {
         records[index].name = newName;
         localStorage.setItem('records', JSON.stringify(records));
