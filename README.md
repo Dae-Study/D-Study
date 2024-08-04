@@ -1,4 +1,37 @@
 # D-Study 작업 현황
+
+## 일자 : 2024년 8월 3일 (토)
+### 1. 파일 설명 :
+
+__Labeling__ : Labeling 필요 코드(.py) pakage화 
+
+__1) MongDBconnection__: 
+
+     def DBconnection(DB_name, Col_name, type):__ 몽고DB 데이터베이스의 collection 가져옴
+
+     def MongoDB_Update(df, collection):__ 몽고DB 데이터베이스의 collection 등록함
+
+__2) BadWordFiltering__ : DataFrame에 있는 문장을 검사하여 욕설이 있는 경우 label_1 값을 0, 아니면 1로 표현함
+
+                          1. 문장 비속어 검사 : 구현 완료 
+
+                          2. 형태소 검사 후 공백 제거는  Morpheme classification.py에 구현, 함수로 가져온 결과값을 비속어 검사하도록 수정할 예정 
+
+                          3. 영문, 일본어 제거 : 구현 완료 but 비중 검사의 경우 이수현과 협업 
+
+__3) badWords__ : 나쁜말 모음집 (.txt)  
+
+__4) main__ : 모든 파일 실행 파일
+
+__5) init__ : import문
+
+__5) Morpheme classification__ : 형태소 분류 및 Other(형태소 분류 없음)이 연속된 경우를 비속어로 보고 공백을 제거함
+
+
+
+## 8월 4일 작업 예정 :
+ 1차 라벨링 완료 및 비속어 리스트를 늘리는 것이 중요하다고 생각함, 이부분은 수현이의 자료를 검토할 예정! 웬만하면 1차 라벨링때 다 걸러지면 좋겠다고 생각해 
+
 ## 일자 : 2024년 8월 2일 (금)
 ### 1. 파일 설명 :
 
