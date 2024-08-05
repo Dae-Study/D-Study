@@ -17,14 +17,14 @@
             padding: 10px;
             box-sizing: border-box;
             overflow-y: auto;
-            max-height: 80vh;
+            max-height: 100%;
         }
         .collection h2 {
             margin-top: 0;
         }
         .data-item {
             border-bottom: 2px solid rgb(97, 132, 189);
-            padding: 5px 0;
+            padding: 20px;
         }
 
     </style>
@@ -51,21 +51,21 @@
                 const collection1Data = document.getElementById('collection1-data');
                 const collection2Data = document.getElementById('collection2-data');
 
-                collection1Data.innerHTML = data.Min_A.map(item => `
+                collection1Data.innerHTML = data.collection1.map(item => `
                     <div class="data-item">
                         <strong>Text:</strong> ${item.text}<br>
                         <strong>Time:</strong> ${item.time}<br>
                         <strong>Author:</strong> ${item.author}
                     </div>
-                `).join('<hr>');
+                `).join('');
 
-                collection2Data.innerHTML = data.New_A.map(item => `
+                collection2Data.innerHTML = data.collection2.map(item => `
                     <div class="data-item">
                         <strong>Text:</strong> ${item.text}<br>
                         <strong>Time:</strong> ${item.time}<br>
                         <strong>Author:</strong> ${item.author}
                     </div>
-                `).join('<hr>');
+                `).join('');
 
             } catch (error) {
                 console.error('Error fetching data:', error);

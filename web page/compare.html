@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COMPARE</title>
-    <link rel="stylesheet" href="css/compare.css">
     <link rel="stylesheet" href="css/menubar.css">
     <style>
         /* 사이드바 스타일 */
@@ -37,8 +36,8 @@
 </head>
 <body>
 
+    <!-- 메뉴바 -->
     <div id="openMenu">&#9776; MENU</div>
-    
     <div id="menu" class="menubar">
         <div id='closeMenu'>&#10006; CLOSE</div>
         <ul>
@@ -49,17 +48,18 @@
         </ul>
     </div>
 
-        <!-- 비교 콘텐츠 영역 -->
+        <!-- 몽고DB 콘텐츠 영역 -->
         <div id="compare-content">
             <iframe id="compare-iframe" src="http://localhost:3003/com_server.html"></iframe>
         </div>
 
-        <!-- 사이드바에 iframe 추가 -->
+        <!-- 사이드바 -->
         <div id="sidebar">
             <iframe id="iframesidebar" src="sidebar.html"></iframe>
         </div>
 
-    <script src="js/compare.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/sidebar.js"></script>
     <script src="js/menubar.js"></script>
 
 </body>
