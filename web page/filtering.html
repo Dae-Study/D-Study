@@ -6,10 +6,17 @@
     <title>FILTERING</title>
     <link rel="stylesheet" href="css/menubar.css">
     <style>
+        /*  */
+        input {
+            align-items: center;
+            width: 300px;
+        }
+
         /* 사이드바 스타일 */
         #sidebar {
-            width: 250px;
-            height: 800px;
+            width: 225px;
+            height: 100%;
+            float: right;
         }
 
         /* iframe 스타일 */
@@ -17,19 +24,21 @@
             width: 100%;
             height: 100%;
             border: none;
+            height: 100vh;
+            display: flex;
         }
 
         /* 전체 페이지 스타일 */
         body {
-            margin: 0;
-            padding: 0;
-            display: flex;
             background-color:rgb(153, 192, 238);
+            height: 100vh;
         }
 
         #filtering-content {
             flex: 1;
-            margin-left: 120px; /* 사이드바 너비를 고려하여 여백 설정 */
+            margin-left: 120px; /* 메뉴바 너비를 고려하여 여백 설정 */
+            margin-right: 240px;
+            padding-top: 100px;
         }
     </style>
 
@@ -47,6 +56,9 @@
           <li><a href="report.html">REPORT</a></li>
         </ul>
     </div>
+
+        <!-- 단어 검색 -->
+        <input type="text" id="wordInput" placeholder="Word Search">
     
         <!-- 몽고DB 콘텐츠 영역 -->
         <div id="filtering-content">
