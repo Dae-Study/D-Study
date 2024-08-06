@@ -3,7 +3,6 @@ from pymongo import MongoClient
 from bson import ObjectId
 import pandas as pd
 
-
 # 몽고DB에 연결하는 함수
 def DBconnection(DB_name, Col_name, type):
     mongo_uri = 'mongodb+srv://gimyuna:dtw01060@DL-Dragons.gqslqxe.mongodb.net/?retryWrites=true&w=majority'
@@ -31,4 +30,3 @@ def MongoDB_Update(df, collection):
          {"_id": object_id}, 
             {"$set": {"label_1": row["label_1"]}}
         )
-

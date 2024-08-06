@@ -2,7 +2,6 @@ import pandas as pd
 from kiwipiepy import Kiwi
 import re
 
-
 # Kiwi 초기화
 kiwi = Kiwi()
 
@@ -62,80 +61,12 @@ def analyze_text(text):
 
     return labeled_morphemes
 
-# 예시 댓글
-comment = "어떻게 이래"
-result = analyze_text(comment)
-print(result)
-
-
-# 예시 댓글
-comment = "어떻게 이래"
-result = analyze_text(comment)
-print(result)
-
-
 def process_dataframe(df, text_column):
     processed_data = []
     no_space_text_data = []
 
     for text in df[text_column]:
         labeled_morphemes = analyze_text(text)
-
-        # 기호 제거 및 형태소 병합
-        cleaned_morphemes = []
-        for morpheme, label in labeled_morphemes:
-            if label == 'Other':
-                cleaned_morpheme = re.sub(r'[1@!]', '', morpheme)
-                if cleaned_morpheme:
-                    cleaned_morphemes.append((cleaned_morpheme, label))
-            else:
-                cleaned_morphemes.append((morpheme, label))
-
-        # 연속된 'Other' 형태소 병합 (공백 없이)
-        no_space_text = ''
-        merged_morphemes = []
-        i = 0
-        while i < len(cleaned_morphemes):
-            morpheme, label = cleaned_morphemes[i]
-            if label == 'Other':
-                start = i
-                while i < len(cleaned_morphemes) and cleaned_morphemes[i][1] == 'Other':
-                    i += 1
-                end = i
-                combined_other = ''.join(m for m, _ in cleaned_morphemes[start:end])
-                no_space_text += combined_other
-                merged_morphemes.append((combined_other, 'Other'))
-            else:
-                no_space_text += morpheme + ' '
-                merged_morphemes.append((morpheme, label))
-                i += 1
-
-        processed_data.append(merged_morphemes)
-        no_space_text_data.append(no_space_text.strip())
-
-    df['processed_text'] = processed_data
-    df['Remove_spaces_data'] = no_space_text_data
-    return df
-
-# 예제 DataFrame
-data = {'text': ['어떻게 이래', 'ㅅ1111ㅂ새꺄', 'ㅅ ㅂ']}
-df = pd.DataFrame(data)
-df = process_dataframe(df, 'text')
-print(df)
-
-
-
-
-
-'''
-# 데이터프레임을 이용한 형태소 분석 작업
-def process_dataframe(df, text_column):
-    processed_data = []
-    no_space_text_data = []
-
-    for text in df[text_column]:
-        labeled_morphemes = analyze_text(text)
-        processed_data.append(labeled_morphemes)
 
         # 기호 제거 및 형태소 병합
         cleaned_morphemes = []
@@ -144,22 +75,18 @@ def process_dataframe(df, text_column):
             morpheme, label = labeled_morphemes[i]
 
             if label == 'Other':
-                # 'Other' 다음에 있는 기호 제거
-                cleaned_morpheme = morpheme
-                if i + 1 < len(labeled_morphemes):
-                    next_morpheme, next_label = labeled_morphemes[i + 1]
-                    if next_label == 'Other':
-                        cleaned_morpheme = re.sub(r'[1@!]', '', cleaned_morpheme)
-                        cleaned_morphemes.append((cleaned_morpheme, label))
-                else:
+                # 기호 제거
+                cleaned_morpheme = re.sub(r'[1@!]', '', morpheme)
+                if cleaned_morpheme:  # 비어있지 않은 경우에만 추가
                     cleaned_morphemes.append((cleaned_morpheme, label))
             else:
                 cleaned_morphemes.append((morpheme, label))
                 
             i += 1
-        
-        # 연속된 'Other' 형태소 병합
+
+        # 연속된 'Other' 형태소 병합 (공백 없이)
         no_space_text = ''
+        processed_text = ''
         i = 0
         while i < len(cleaned_morphemes):
             morpheme, label = cleaned_morphemes[i]
@@ -171,9 +98,84 @@ def process_dataframe(df, text_column):
                     i += 1
                 end = i
                 
-                # 연속 'Other' 형태소를 병합
+                # 연속 'Other' 형태소를 병합 (공백 없이)
                 combined_other = ''.join(morpheme for morpheme, _ in cleaned_morphemes[start:end])
-                no_space_text += combined_other + ' '
+                no_space_text += combined_other
+                processed_text += f'({combined_other}, Other) '
+            else:
+                no_space_text += morpheme
+                processed_text += f'({morpheme}, {label}) '
+                i += 1
+
+        no_space_text_data.append(no_space_text.strip())
+        processed_data.append(processed_text.strip())
+
+    df['processed_text'] = processed_data
+    df['Remove_spaces_data'] = no_space_text_data
+    return df
+
+
+
+''' 이전 코드 
+import pandas as pd
+from kiwipiepy import Kiwi
+
+# Kiwi 초기화
+kiwi = Kiwi()
+
+# 형태소 분석 및 품사 태깅 함수
+def analyze_text(text):
+    tokens = kiwi.tokenize(text)
+    labeled_morphemes = []
+
+    for token in tokens:
+        morpheme_str = token.form
+        morpheme_tag = token.tag
+
+        if morpheme_tag.startswith('N'):
+            label = 'Noun'
+        elif morpheme_tag.startswith('V'):
+            label = 'Verb'
+        elif morpheme_tag.startswith('J'):
+            label = 'Adjective'
+        elif morpheme_tag.startswith('E'):
+            label = 'Ending'
+        elif morpheme_tag.startswith('P'):
+            label = 'Particle'
+        else:
+            label = 'Other'
+
+        labeled_morphemes.append((morpheme_str, label))
+
+    return labeled_morphemes
+
+
+# 데이터프레임을 이용한 형태소 분석 작업
+def process_dataframe(df, text_column):
+    processed_data = []
+    no_space_text_data = []
+
+    for text in df[text_column]:
+        labeled_morphemes = analyze_text(text)
+        processed_data.append(labeled_morphemes)
+
+        # 형태소를 문자열로 변환하고 공백 제거
+        no_space_text = ''
+        i = 0
+        while i < len(labeled_morphemes):
+            morpheme, label = labeled_morphemes[i]
+            
+            if label == 'Other':
+                start = i
+                # 병합 가능한 연속 'Other' 찾기
+                while i < len(labeled_morphemes) and labeled_morphemes[i][1] == 'Other':
+                    i += 1
+                end = i
+                
+                # 연속 'Other' 형태소를 병합
+                no_space_text += ''.join(morpheme for morpheme, _ in labeled_morphemes[start:end])
+                if i < len(labeled_morphemes):
+                    no_space_text += ' '  # 다음 형태소와 구분
             else:
                 no_space_text += morpheme + ' '
                 i += 1
@@ -183,5 +185,4 @@ def process_dataframe(df, text_column):
     df['processed_text'] = processed_data
     df['Remove_spaces_data'] = no_space_text_data
     return df
-
 '''

@@ -1,8 +1,11 @@
-from langdetect import detect, DetectorFactory
-from kiwipiepy import Kiwi
-from __init__ import*
-#from MongDBconnection import DBconnection
+# BadWordFiltering.py
+from __init__ import *
 import re
+import pandas as pd
+from langdetect import detect, DetectorFactory
+from MorphemeClassification import process_dataframe
+
+
 # 언어 감지기의 랜덤성을 제거하여 동일한 결과를 얻도록 설정
 DetectorFactory.seed = 0
 
@@ -35,7 +38,6 @@ class BadWordFiltering(set):
                 content = file.read()
                 bad_words = [word.strip() for word in content.split(',') if word.strip()]
                 self.update(bad_words)
-           # print(f"비속어 목록: {self}")  # 비속어 목록 출력 (디버깅용)
         except FileNotFoundError:
             print(f"파일을 찾을 수 없습니다: {file_path}")
         except Exception as e:
@@ -48,43 +50,51 @@ class BadWordFiltering(set):
         :param text: 비속어를 확인할 텍스트.
         :return: 텍스트에 비속어가 포함되어 있으면 True, 그렇지 않으면 False.
         """
-
-        print("check")
         text = text.lower()  # 대소문자 구분 없이 비교
         for word in self:
             # 비속어가 부분 문자열로 존재하는지 확인
             if re.search(re.escape(word), text):  # 단순 문자열 매칭
-                print(f"비속어 발견: {word} in {text}")  # 디버깅용
                 return True
         return False
-    
 
-
-
-    def partial_check(self, text):
+    def partial_check(self, text, process_func):
         """
-        텍스트에 비속어의 첫 문자가 포함된 경우 공백을 제거한 후 비속어가 포함되어 있는지 확인합니다.
+        텍스트에 비속어의 첫 문자가 포함된 경우 형태소 분석 후 공백을 제거한 텍스트에서 비속어가 포함되어 있는지 확인합니다.
 
         :param text: 비속어를 확인할 텍스트.
+        :param process_func: 형태소 분석 및 공백 제거 함수.
         :return: 텍스트에 비속어가 포함되어 있으면 True, 그렇지 않으면 False.
         """
+        df = process_func(pd.DataFrame({'text': [text]}), 'text')
+        no_space_text = df['Remove_spaces_data'].iloc[0]
+        return self.check(no_space_text)
 
-        print("Partial")
-        text = text.lower()  # 대소문자 구분 없이 비교
-        for word in self:
-            # 비속어의 첫 문자가 존재하는지 확인
-            if word[0] in text:
-                text_no_spaces = text.replace(" ", "")
-                if re.search(re.escape(word), text_no_spaces):  # 공백 제거 후 단순 문자열 매칭
-                    print(f"공백 제거 후 비속어 발견: {word} in {text_no_spaces}")  # 디버깅용
-                    return True
+
+def contains_foreign_language(text):
+    """
+    텍스트에 외국어(영어, 일본어)가 포함되어 있는지 확인합니다.
+
+    :param text: 확인할 텍스트.
+    :return: 영어 또는 일본어가 포함되어 있으면 True, 그렇지 않으면 False.
+    """
+    english_regex = re.compile(r'[A-Za-z]')
+    japanese_regex = re.compile(r'[\u3040-\u30ff\u31f0-\u31ff\u4e00-\u9faf]')
+
+    if english_regex.search(text):
+        return True
+    if japanese_regex.search(text):
+        return True
+
+    try:
+        lang = detect(text)
+        if lang in ['en', 'ja']:
+            return True
+    except:
         return False
-
-
-        # 각 행을 검사하고 비속어가 포함된 경우 label_1을 0으로 설정    
+    return False
 
 # BadWordFiltering 인스턴스 생성, 비속어 목록 파일 경로를 제공
-bad_word_filter = BadWordFiltering(file_path=r'C:\Users\oben0\Desktop\Git_Local\D-Study\D-Study-Gang\D-Study-Gang\Labeling\badwords.txt')
+bad_word_filter = BadWordFiltering(file_path='C:/Users/oben0/Desktop/Git_Local/D-Study/Labeling/badwords.txt')
 
 def check_both(text, bad_word_filter):
     """
@@ -94,47 +104,21 @@ def check_both(text, bad_word_filter):
     :param bad_word_filter: 비속어 필터링 클래스 인스턴스.
     :return: 비속어가 포함되어 있으면 True, 그렇지 않으면 False.
     """
-    return bad_word_filter.check(text) or bad_word_filter.partial_check(text)
-
-def contains_foreign_language(text):
-    """
-    텍스트에 외국어(영어, 일본어)가 포함되어 있는지 확인합니다.
-
-    :param text: 확인할 텍스트.
-    :return: 영어 또는 일본어가 포함되어 있으면 True, 그렇지 않으면 False.
-    """
-    # 영어와 일본어 문자를 탐지하기 위한 정규 표현식
-    english_regex = re.compile(r'[A-Za-z]')
-    japanese_regex = re.compile(r'[\u3040-\u30ff\u31f0-\u31ff\u4e00-\u9faf]')
-
-    if english_regex.search(text):
-        return True
-    if japanese_regex.search(text):
-        return True
-
-    # langdetect를 사용하여 텍스트의 언어를 감지
-    try:
-        lang = detect(text)
-        if lang in ['en', 'ja']:
-            return True
-    except:
-        return False
-    return False
-
-# Kiwi 객체 생성
-kiwi = Kiwi()
-
-
-
-
-
-
-
-
-
-
+    return bad_word_filter.check(text) or bad_word_filter.partial_check(text, process_dataframe)
 
 def Labeling_1(df):
-    # 각 행을 검사하고 비속어가 포함된 경우 label_1을 0으로 설정 
-    df['label_1'] = df['text'].apply(lambda text: '000' if contains_foreign_language(text) else (0 if check_both(text, bad_word_filter) else 1))
+    """
+    주어진 데이터프레임의 'text' 열에 대해 전처리를 수행하고, 
+    비속어 여부와 외국어 포함 여부에 따라 'label_1' 열을 추가합니다.
+
+    :param df: 텍스트 데이터를 포함한 데이터프레임.
+    :return: 'label_1' 열이 추가된 데이터프레임.
+    """
+    df = process_dataframe(df, 'text')  # 형태소 분석 및 공백 제거 작업을 수행
+    
+    df['label_1'] = df.apply(
+        lambda row: '000' if contains_foreign_language(row['text']) else
+        (0 if check_both(row['text'], bad_word_filter) else 1),
+        axis=1
+    )
     return df
