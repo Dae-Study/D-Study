@@ -1,4 +1,7 @@
 # D-Study 작업 현황
+
+![Test Image](test_Image.png)
+
 ## 일자 : 2024년 8월 6일 (화)
 <작업중>
 
