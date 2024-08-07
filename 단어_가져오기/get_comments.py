@@ -6,5 +6,5 @@ mongo_uri = "mongodb+srv://gimyuna:dtw01060D@dl-dragons.gqslqxe.mongodb.net/?ret
 V_counter = get_comments(mongo_uri)
 
 # V_counter의 예시 항목 몇 개를 출력
-for word, count in V_counter.items():  # 상위 10개의 항목만 출력
+for word, count in V_counter.items():
     print(f"{word}: {count}")
