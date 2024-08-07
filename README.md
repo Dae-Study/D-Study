@@ -2,7 +2,7 @@
 ## 일자 : 2024년 8월 7일 (수)
 ![Test Image](test_Image.png)
 
-파일 변경 
+__파일 변경__ 
 MorphemeClassification → New_MorphemeClassification
 
 형태소 분류의 경우, 
