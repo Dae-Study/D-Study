@@ -3,5 +3,5 @@
 
 ### 2. get_comments 파일에 몽고디비 uri를 작성한다(이미 작성되어있음)
 
-### 3. get_comments 에서 verb_collecter 변수가 용언(단어)을 추출한 딕셔너리이다
+### 3. get_comments파일이 실행시킬 코드이다. 해당 파일에서 verb_collecter 변수가 용언(단어)을 추출한 딕셔너리이다
 verb_collecter를 사용해서 원하는 기능을 완성하면 됨!
