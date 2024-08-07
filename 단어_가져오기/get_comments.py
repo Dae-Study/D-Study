@@ -1,4 +1,4 @@
-from 단어_추출 import get_comments  # 함수가 정의된 모듈을 임포트
+from GET_DB import get_comments  # 함수가 정의된 모듈을 임포트
 
 mongo_uri = "mongodb+srv://gimyuna:dtw01060D@dl-dragons.gqslqxe.mongodb.net/?retryWrites=true&w=majority"
 
