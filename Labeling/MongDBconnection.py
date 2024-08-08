@@ -30,3 +30,5 @@ def MongoDB_Update(df, collection):
          {"_id": object_id}, 
             {"$set": {"label_1": row["label_1"]}}
         )
+
+#df, collection = DBconnection('Gang','Min_B',1)

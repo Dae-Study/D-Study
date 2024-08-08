@@ -3,7 +3,7 @@ from __init__ import *
 import re
 import pandas as pd
 from langdetect import detect, DetectorFactory
-from MorphemeClassification import process_dataframe
+#from New_MorphemeClassification import process_dataframe
 
 
 # 언어 감지기의 랜덤성을 제거하여 동일한 결과를 얻도록 설정
@@ -57,68 +57,32 @@ class BadWordFiltering(set):
                 return True
         return False
 
-    def partial_check(self, text, process_func):
-        """
-        텍스트에 비속어의 첫 문자가 포함된 경우 형태소 분석 후 공백을 제거한 텍스트에서 비속어가 포함되어 있는지 확인합니다.
-
-        :param text: 비속어를 확인할 텍스트.
-        :param process_func: 형태소 분석 및 공백 제거 함수.
-        :return: 텍스트에 비속어가 포함되어 있으면 True, 그렇지 않으면 False.
-        """
-        df = process_func(pd.DataFrame({'text': [text]}), 'text')
-        no_space_text = df['Remove_spaces_data'].iloc[0]
-        return self.check(no_space_text)
-
-
-def contains_foreign_language(text):
-    """
-    텍스트에 외국어(영어, 일본어)가 포함되어 있는지 확인합니다.
-
-    :param text: 확인할 텍스트.
-    :return: 영어 또는 일본어가 포함되어 있으면 True, 그렇지 않으면 False.
-    """
-    english_regex = re.compile(r'[A-Za-z]')
-    japanese_regex = re.compile(r'[\u3040-\u30ff\u31f0-\u31ff\u4e00-\u9faf]')
-
-    if english_regex.search(text):
-        return True
-    if japanese_regex.search(text):
-        return True
-
-    try:
-        lang = detect(text)
-        if lang in ['en', 'ja']:
-            return True
-    except:
-        return False
-    return False
-
 # BadWordFiltering 인스턴스 생성, 비속어 목록 파일 경로를 제공
 bad_word_filter = BadWordFiltering(file_path='C:/Users/oben0/Desktop/Git_Local/D-Study/Labeling/badwords.txt')
 
-def check_both(text, bad_word_filter):
-    """
-    텍스트에 대해 check와 partial_check를 모두 수행하여 비속어를 확인합니다.
-
-    :param text: 비속어를 확인할 텍스트.
-    :param bad_word_filter: 비속어 필터링 클래스 인스턴스.
-    :return: 비속어가 포함되어 있으면 True, 그렇지 않으면 False.
-    """
-    return bad_word_filter.check(text) or bad_word_filter.partial_check(text, process_dataframe)
-
 def Labeling_1(df):
     """
-    주어진 데이터프레임의 'text' 열에 대해 전처리를 수행하고, 
-    비속어 여부와 외국어 포함 여부에 따라 'label_1' 열을 추가합니다.
-
-    :param df: 텍스트 데이터를 포함한 데이터프레임.
-    :return: 'label_1' 열이 추가된 데이터프레임.
-    """
-    df = process_dataframe(df, 'text')  # 형태소 분석 및 공백 제거 작업을 수행
+    df의 '1st_filtering_text' 컬럼을 바탕으로 영어, 일본어, 비속어 여부를 검사하여
+    'Label_1' 컬럼에 값을 기록합니다.
     
-    df['label_1'] = df.apply(
-        lambda row: '000' if contains_foreign_language(row['text']) else
-        (0 if check_both(row['text'], bad_word_filter) else 1),
-        axis=1
-    )
+    :param df: 데이터프레임
+    :return: 수정된 데이터프레임
+    """
+    # 'Label_1' 컬럼을 초기화
+    df['Label_1'] = None
+
+    for i, row in df.iterrows():
+        text = row['1st_filtering_text']
+        ratio = row['ja_en__ratio']
+
+        # 외국어(영어, 일본어)가 60% 이상인 경우
+        if ratio >= 0.6:
+            df.at[i, 'Label_1'] = '000'
+        # 비속어가 포함된 경우
+        elif bad_word_filter.check(text):
+            df.at[i, 'Label_1'] = '0'
+        # 아무 문제 없는 경우
+        else:
+            df.at[i, 'Label_1'] = '1'
+
     return df
