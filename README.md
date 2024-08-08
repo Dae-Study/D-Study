@@ -1,4 +1,16 @@
 # D-Study 작업 현황
+## 일자 : 2024년 8월 8일 (목)
+![Test Image](test_Image2.png)
+
+
+1차 라벨링 단계 
+     1. 1차 형태소 분리 df ['processed_text']
+     2. 1차 필터링 후 형태소 분리 df['final_processed_text']
+     3. 1차 필터링 후 형태소의 병합하여 텍스트 저장 df ['1st_filtering_text']
+     4. 1st_filtering_text에서 60% 이상 한글인 text에서 비속어/속어 분류함
+
+문제 발생 : DB 연결이 갑자기 안 된다.... 연결 후 웹페이지 작업할 예정 
+
 ## 일자 : 2024년 8월 7일 (수)
 ![Test Image](test_Image.png)
 
