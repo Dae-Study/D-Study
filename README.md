@@ -1,3 +1,22 @@
+## 2024년 8월 8일
+-보고서 종합의견 프로젝트 구조   
+      project-root/   
+      │   
+      ├── app/   
+         ├── __init__.py    
+         ├── db_connection.py    
+         ├── mongodb_update.py    
+         ├── generate_report.py   
+         └── config.py   
+      ├── run.py    
+      └── requirements.txt   
+
+
+      test 중...
+
+-반의어 리스트
+
+
 ## 2024년 8월 7일
 - 보고서 종합의견 Gpt 사용성
       open AI API 활용하면 가능   
