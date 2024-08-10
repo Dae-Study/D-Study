@@ -5,6 +5,7 @@ body {
     padding: 10px;
     height: 100vh;
     box-sizing: border-box;
+    float: right;
 }
 #recordsContainer {
     width: 200px;

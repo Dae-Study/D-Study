@@ -81,11 +81,6 @@ iframe {
         width: 100px;
         font-size: 13px;
     }
-
-    iframe {
-        flex: 0 0 150px;
-        height: 100%;
-    }
 }
 @media (max-width: 860px) {
     #sidebar {
