@@ -1,11 +1,11 @@
-from __init__ import *
+#from __init__ import *
 from pymongo import MongoClient
 from bson import ObjectId
 import pandas as pd
 
 # 몽고DB에 연결하는 함수
 def DBconnection(DB_name, Col_name, type):
-    mongo_uri = 'mongodb+srv://gimyuna:dtw01060@DL-Dragons.gqslqxe.mongodb.net/?retryWrites=true&w=majority'
+    mongo_uri = 'mongodb+srv://gimyuna:dtw01060D@DL-Dragons.gqslqxe.mongodb.net/?retryWrites=true&w=majority'
     client = MongoClient(mongo_uri)
     db = client.get_database(DB_name)  
     collection = db[Col_name]
@@ -31,4 +31,5 @@ def MongoDB_Update(df, collection):
             {"$set": {"label_1": row["label_1"]}}
         )
 
-#df, collection = DBconnection('Gang','Min_B',1)
+df, collection = DBconnection('Gang','Min_B',1)
+print("김유나 가만안둬")
