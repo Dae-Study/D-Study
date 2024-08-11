@@ -1,0 +1,20 @@
+project/
+│
+├── app.py < 상위에서 동작해야함
+│
+├── templates/
+│   ├── user.html
+│   ├── search.html
+│   ├── filtering.html
+│   ├── compare.html
+│   └── sidebar.html
+│
+└── static/
+    ├── css/
+    │   ├── user.css
+    │   ├── search.css
+    │   └── filtering.css
+    └── js/
+        ├── user.js
+        ├── search.js
+        └── filtering.js
