@@ -1,0 +1,206 @@
+from pymongo import MongoClient
+from kiwipiepy import Kiwi
+import pandas as pd
+
+def get_db_collections(mongo_uri):
+    try:
+        client = MongoClient(mongo_uri, tls=True, tlsAllowInvalidCertificates=True)
+        print("get_db_collections 연결성공")
+    except Exception as e:
+        print(f"오류 발생: {e}")
+        return None  # 오류 발생 시 None 반환
+
+    DB_collections = {}
+    database_names = client.list_database_names()
+
+    for db_name in database_names:
+        db = client[db_name]
+        collection_names = db.list_collection_names()
+        DB_collections[db_name] = collection_names
+
+    return DB_collections
+
+def get_comments(mongo_uri):
+    try:
+        client = MongoClient(mongo_uri, tls=True, tlsAllowInvalidCertificates=True)
+        print("get_comments 연결성공")
+    except Exception as e:
+        print(f"오류 발생: {e}")
+        return None  # 오류 발생 시 None 반환
+
+    kiwi = Kiwi()
+    V_counter = {}
+    DB_collection = get_db_collections(mongo_uri)
+
+    if DB_collection is None:
+        return V_counter  # DB 컬렉션을 가져오지 못했을 경우 빈 사전 반환
+
+    for db_name, collection_names in DB_collection.items():
+        db = client[db_name]
+        for collection_name in collection_names:
+            collection = db[collection_name]
+            comments = collection.find()
+
+            for comment in comments:
+                text = comment.get('text')
+                if not text:
+                    continue
+
+                sentences = kiwi.split_into_sents(text, return_tokens=True)
+                for i, sentence in enumerate(sentences, start=1):
+                    for token in sentence.tokens:
+                        if token.tag.startswith("VV") or token.tag.startswith("VA"):
+                            if token.form in V_counter:
+                                V_counter[token.form] += 1
+                            else:
+                                V_counter[token.form] = 1
+
+    return V_counter
+
+def create_antonym_list(verbs, antonym_dict):
+    antonyms = []
+    for verb in verbs:
+        if verb in antonym_dict:
+            antonyms.append((verb, antonym_dict[verb]))
+    return antonyms
+
+def save_to_excel(antonyms, file_name="antonyms.xlsx"):
+    df = pd.DataFrame(antonyms, columns=["Word", "Antonym"])
+    df.to_excel(file_name, index=False)
+    print(f"엑셀 파일로 저장되었습니다: {file_name}")
+
+if __name__ == "__main__":
+    # MongoDB URI 수정
+    mongo_uri = "mongodb+srv://gimyuna:9kb9VqpyjYDUa7uF@cluster0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    verbs = get_comments(mongo_uri)
+    
+    # 예시로 사용할 반의어 사전
+    antonym_dict = {
+        "크다": "작다",
+        "많다": "적다",
+        "빠르다": "느리다",
+        "높다": "낮다",
+        "뽑다": ["나가다", "퇴출하다", "들어가다"],
+        "갈라지다": ["결합하다", "단결하다", "뭉치다"],
+        "거두다": ["흩다", "벌이다", "뿌리다"],
+        "걷다": ["뛰다"],
+        "기다": ["날다"],
+        "깔다": ["개키다", "걷다"],
+        "꽂다": ["빼다"],
+        "끄다": ["넣다", "켜다"],
+        "낫다": ["못하다"],
+        "늙다": ["젊어지다"],
+        "늦다": ["빠르다", "이르다"],
+        "드리다": ["받다"],
+        "모르다": ["알다", "이해하다"],
+        "앉다": ["서다"],
+        "어지르다": ["정리하다"],
+        "있다": ["부재하다", "없다"],
+        "잦다": ["드문드문하다", "드물다", "뜨다"],
+        "적시다": ["건조하다", "말리다"],
+        "젖다": ["마르다"],
+        "줍다": ["버리다", "잃다", "잃어버리다"],
+        "짜다": ["싱겁다", "후하다"],
+        "찌다": ["마르다", "빠지다", "야위다"],
+        "치다": ["걷다", "벗기다"],
+        "틀리다": ["맞다"],
+        "끓이다": ["식히다"],
+        "넓히다": ["좁히다"],
+        "달하다": ["미달하다"],
+        "반출되다": ["반입하다"],
+        "식히다": ["덥히다", "데우다", "익히다"],
+        "웃기다": ["울리다"],
+        "치받다": ["내리받다"],
+        "틀리다": ["맞다"],
+        "낮추다": ["높이다", "올리다"],
+        "적시다": ["건조하다", "말리다"],
+        "좁히다": ["넓히다"],
+        "월남하다": ["월북하다"],
+        "잊히다": ["기억되다"],
+        "가다": ["오다"],
+        "열다": ["닫다"],
+        "넓다": ["좁다"],
+        "높다": ["낮다"],
+        "시작하다": ["끝내다"],
+        "보이다": ["가리다"],
+        "들어가다": ["나가다"],
+        "빠르다": ["느리다"],
+        "강하다": ["약하다"],
+        "이기다": ["지다"],
+        "올라가다": ["내려가다"],
+        "들다": ["내리다"],
+        "먹다": ["마시다"],
+        "자다": ["깨다"],
+        "하다": ["않다"],
+        "걷다": ["달리다"],
+        "미루다": ["바로하다"],
+        "주다": ["받다"],
+        "낫다": ["아프다"],
+        "쓰다": ["벗다"],
+        "만들다": ["부수다"],
+        "생기다": ["없어지다"],
+        "자르다": ["붙이다"],
+        "배우다": ["잊다"],
+        "살다": ["죽다"],
+        "필요하다": ["불필요하다"],
+        "찾다": ["잃다"],
+        "받다": ["주다"],
+        "보내다": ["받다"],
+        "일어나다": ["누워있다"],
+        "풀다": ["묶다"],
+        "주다": ["받다"],
+        "계속하다": ["중단하다"],
+        "자르다": ["붙이다"],
+        "믿다": ["의심하다"],
+        "생각하다": ["잊다"],
+        "남다": ["없어지다"],
+        "쓰다": ["다하다"],
+        "적다": ["많다"],
+        "읽다": ["쓰다"],
+        "사라지다": ["생기다"],
+        "줄다": ["늘다"],
+        "잡다": ["놓다"],
+        "넘어지다": ["일어나다"],
+        "줄어들다": ["늘어나다"],
+        "적다": ["많다"],
+        "비다": ["가득하다"],
+        "기다리다": ["서두르다"],
+        "지키다": ["어기다"],
+        "들어오다": ["나가다"],
+        "올리다": ["내리다"],
+        "막다": ["열다"],
+        "잃다": ["찾다"],
+        "세우다": ["놓다"],
+        "그리다": ["지우다"],
+        "모으다": ["흩어지다"],
+        "앉다": ["서다"],
+        "올리다": ["내리다"],
+        "받다": ["주다"],
+        "가리다": ["보이다"],
+        "묶다": ["풀다"],
+        "보내다": ["받다"],
+        "바라다": ["버리다"],
+        "넘어가다": ["머무르다"],
+        "싸우다": ["화해하다"],
+        "갔다": ["왔다"],
+        "받다": ["주다"],
+        "나가다": ["들어가다"],
+        "갖다": ["놓다"],
+        "늘어나다": ["줄어들다"],
+        "하다": ["그만두다"],
+        "닫다": ["열다"],
+        "시작하다": ["중단하다"],
+        "내리다": ["올리다"],
+        "집다": ["떨어뜨리다"],
+        "가다": ["오다"],
+        "세우다": ["펴다"],
+        "버리다": ["모으다"],
+}
+
+
+    verbs = get_comments(mongo_uri)
+    if verbs:
+        antonym_list = create_antonym_list(verbs, antonym_dict)
+        save_to_excel(antonym_list)
+    else:
+        print("동사를 추출하지 못했습니다.")
