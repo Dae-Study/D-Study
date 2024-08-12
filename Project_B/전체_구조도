@@ -1,0 +1,98 @@
++---------------------------------------+
+|                user.html              |
+|  +-------------------------------+    |
+|  |    user.css                    |    |
+|  |    user.js                     |    |
+|  +-------------------------------+    |
+|   - 로그인 페이지                |    |
+|   - `search.html`로 이동          |    |
++------------------------+----------+----+
+                         |
+                         |
++------------------------v----------+----+
+|               search.html           |    |
+|  +-------------------------------+    |
+|  |    search.css                  |    |
+|  |    search.js                   |    |
+|  +-------------------------------+    |
+|   - 검색 페이지                  |    |
+|   - 메뉴바, 사이드바 포함         |    |
+|   - `filtering.html`, `compare.html`, `report.html` 링크 |
++------------------------+----------+----+
+                         |
+                         |
++------------------------v----------+----+
+|              filtering.html          |    |
+|  +-------------------------------+    |
+|  |    menubar.css                |    |
+|  |    search.js                  |    |
+|  |    sidebar.js                 |    |
+|  |    menubar.js                 |    |
+|  +-------------------------------+    |
+|   - 필터링 페이지                |    |
+|   - 사이드바 및 메뉴바 포함      |    |
+|   - `sidebar.html` 포함된 `iframe`|
++------------------------+----------+----+
+                         |
+                         |
++------------------------v----------+----+
+|               compare.html           |    |
+|  +-------------------------------+    |
+|  |    menubar.css                |    |
+|  |    search.js                  |    |
+|  |    sidebar.js                 |    |
+|  |    menubar.js                 |    |
+|  +-------------------------------+    |
+|   - 비교 페이지                  |    |
+|   - 사이드바 및 메뉴바 포함      |    |
+|   - `sidebar.html` 포함된 `iframe`|
++------------------------+----------+----+
+                         |
+                         |
++------------------------v----------+----+
+|              sidebar.html            |    |
+|  +-------------------------------+    |
+|  |    sidebar.css                 |    |
+|  |    sidebar.js                  |    |
+|  +-------------------------------+    |
+|   - 사이드바 페이지              |    |
+|   - 사이드바 항목 표시           |    |
+|   - `search.html`, `filtering.html`, `compare.html`에서 `iframe`으로 포함 |
++---------------------------------------+
+
+'user.html'
+
+설명: 로그인 페이지입니다.
+연관: 로그인 버튼 클릭 시 search.html로 이동합니다.
+파일: user.css (스타일), user.js (로그인 로직)
+
+'search.html'
+
+설명: 검색 페이지입니다.
+연관:
+링크를 통해 filtering.html, compare.html, report.html로 이동할 수 있습니다.
+filtering.html 및 compare.html에서 sidebar.html을 iframe으로 포함합니다.
+파일: search.css (스타일), search.js (검색 로직), sidebar.js (사이드바 로직)
+
+'filtering.html'
+
+설명: 필터링 페이지입니다.
+연관:
+sidebar.html을 iframe으로 포함하여 사이드바를 표시합니다.
+search.html에서 링크를 통해 접근 가능합니다.
+파일: menubar.css (메뉴바 스타일), search.js (검색 로직), sidebar.js (사이드바 로직), menubar.js (메뉴바 로직)
+
+'compare.html'
+
+설명: 비교 페이지입니다.
+연관:
+sidebar.html을 iframe으로 포함하여 사이드바를 표시합니다.
+search.html에서 링크를 통해 접근 가능합니다.
+파일: menubar.css (메뉴바 스타일), search.js (검색 로직), sidebar.js (사이드바 로직), menubar.js (메뉴바 로직)
+
+'sidebar.html'
+
+설명: 사이드바 페이지입니다.
+연관:
+search.html, filtering.html, compare.html에서 iframe으로 포함하여 사용됩니다.
+파일: sidebar.css (사이드바 스타일), sidebar.js (사이드바 로직)
