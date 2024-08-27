@@ -25,7 +25,6 @@ sentence_vars = {}
 verbs = []
 
 # 용언을 추출해서 condjugated_verbs에 저장하는 코드
-# sentences_all이 모든 문장의 형태소 분석 결과인데, 이거 없애도 되니까 각 문장마다 결과 출력하도록 하면 좋을 것 같아용
 for i, sentences in enumerate(sentences_all, start=1):
     sentence_vars[f"Sentence{i}"] = [sent.text for sent in sentences]
     print(f"\nSentence{i}:")
@@ -44,8 +43,6 @@ for i, sentences in enumerate(sentences_all, start=1):
 conjugated_verbs = [verb if verb.endswith("다") else verb + "다" for verb in verbs]
 
 print("\nExtracted and conjugated verbs:", conjugated_verbs)
-
-# 밑에 코드를 수정해주시면 되영
 
 # 1. DataFrame 
 print("1. DataFrame")
@@ -70,9 +67,3 @@ for verb in conjugated_verbs:
         break
 
 print("Result:", result)
-
-### 수정 할 사항 ###
-# 1. 모든 댓글을 불러온다 (GET_DB 사용) # 이건 밑에 수정 사항 완료되고 나서 해도 될 듯
-# 2. DataFrame을 없애고, 반의어 리스트를 모듈로 불러온다
-# 3. 반의어 체크 부분을 각 문장에 적용하여 각 문장에 해당하는 결과를 출력하도록 한다. (지금 코드는 모든 문장의 동사를 한꺼번에 저장해서 각 문장마다의 결과가 아닌 총 결과가 나오게 됨)
-### 나름대로 주석 적었는데 모르는 거 있으면 라크 개인 메시지로 보내놓으면 알림 확인하는데로 알려드릴게요 근데 아마 chatGPT한테 알려달라 하면 알려줄 것 같긴 해(편한 방법으로 물어보셔) ###
